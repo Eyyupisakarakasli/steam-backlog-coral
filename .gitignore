@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# yerel calisma dosyalari
+.preview/
+dev.log
+
+.vercel
+.env*
+
+# ornek dosya repoda kalsin; gercek anahtarlar .env.local icinde
+!.env*.example
