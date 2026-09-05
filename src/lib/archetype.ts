@@ -51,7 +51,7 @@ export function pickArchetype(stats: BacklogStats, games: OwnedGame[]): Archetyp
   if (topShare >= 50 && mostPlayed) {
     return {
       id: "loyalist",
-      label: "The Loyalist",
+      label: "One-Game Wonder",
       proof: `${fmt(topHours)} of your ${fmt(totalHours)} hours went into ${mostPlayed.name}.`,
       blurb: "You found your game and you never left.",
     };
@@ -78,7 +78,7 @@ export function pickArchetype(stats: BacklogStats, games: OwnedGame[]): Archetyp
   if (bouncedPercent >= 25) {
     return {
       id: "bouncer",
-      label: "The Bouncer",
+      label: "The Sampler",
       proof: `${fmt(bounced)} of your ${fmt(totalGames)} games never got a full hour.`,
       blurb: "You give every game a chance. A very short one.",
     };
@@ -95,8 +95,8 @@ export function pickArchetype(stats: BacklogStats, games: OwnedGame[]): Archetyp
 
   return {
     id: "casual",
-    label: "The Casual",
-    proof: `${fmt(totalGames)} games, ${fmt(totalHours)} hours, no strong pattern.`,
+    label: "The Regular",
+    proof: `${fmt(totalGames)} games, ${fmt(totalHours)} hours, no extremes.`,
     blurb: "You keep it balanced. Boring, but healthy.",
   };
 }
