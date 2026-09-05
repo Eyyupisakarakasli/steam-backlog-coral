@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Steam Backlog
 
-## Getting Started
+Paste a Steam profile, see how much of the library was never opened.
 
-First, run the development server:
+**Live:** https://steam-backlog-coral.vercel.app
+
+No signup. Nothing about you is stored.
+
+## What it does
+
+Reads a public Steam library and answers one question: how much of it did you
+actually play?
+
+The headline is not a fixed number. It picks the stat that describes you best —
+a large untouched backlog, a habit of quitting within the hour, or hundreds of
+hours sunk into a single game.
+
+## Why the headline is a label
+
+People share labels, not numbers. `184 games, 113 never opened` is information.
+`The Hoarder` is an identity. The second one gets sent to a friend.
+
+Archetypes are chosen in a fixed priority order; the first match wins. Once there
+is real usage data this becomes a deviation score, which also unlocks comparisons
+like "3% of players are like you".
+
+## Steam privacy
+
+Steam hides game details by default, even on public profiles. The API returns an
+empty response in that case, which is deliberately kept separate from a genuinely
+empty library — the two get different messages.
+
+To be visible: Profile → Edit Profile → Privacy Settings → **Game details** →
+Public.
+
+## Running locally
 
 ```bash
+npm install
+cp .env.local.example .env.local   # then paste your key
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Get a key at https://steamcommunity.com/dev/apikey — enter `localhost` if it asks
+for a domain.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Next.js App Router, TypeScript, Tailwind. Share cards are rendered server-side
+with `next/og`. Counters use Upstash Redis over its REST API; without the
+credentials the app still runs and just logs instead.
 
-## Learn More
+## Privacy
 
-To learn more about Next.js, take a look at the following resources:
+No accounts, no user database, no cookies. Steam IDs are never stored. The
+counters record an event name and a date, nothing else. `repeat` uses
+`localStorage` in the browser, so no identity exists on the server.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Status
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+v0. It measures three things and the thresholds were frozen before launch:
 
-## Deploy on Vercel
+| | Target |
+|---|---|
+| Profiles looked up | 50 |
+| Shared or downloaded | 5 |
+| Came back a second time | 10 |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Live numbers: [`/stats`](https://steam-backlog-coral.vercel.app/stats)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The share number is the one that matters. If nobody shares, adding a social layer
+will not fix it.
