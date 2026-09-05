@@ -48,7 +48,7 @@ export default async function ResultPage({ params }: Props) {
 
   if (typeof result === "string") return <ErrorView code={result} />;
 
-  const { profile, archetype, stats, suggestion } = result;
+  const { profile, archetype, stats, backlog, backlogRemaining } = result;
 
   return (
     <main className="mx-auto w-full max-w-2xl flex-1 px-6 py-12">
@@ -82,15 +82,63 @@ export default async function ResultPage({ params }: Props) {
         </p>
       )}
 
-      {suggestion && (
-        <section className="mt-12 overflow-hidden rounded-xl border border-border bg-surface">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={suggestion.headerUrl} alt="" className="w-full" />
-          <div className="p-5">
-            <p className="text-sm text-muted">Play this next</p>
-            <p className="mt-1 text-xl font-semibold">{suggestion.name}</p>
-            <p className="mt-1 text-sm text-muted">You already own it. You never opened it.</p>
+      {backlog.length > 0 && (
+        <section className="mt-14">
+          <h2 className="text-xl font-bold">Start here</h2>
+          <p className="mt-1 text-sm text-muted">
+            You already own these. You never opened them. Sorted by how many people reviewed
+            them.
+          </p>
+
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            {backlog.slice(0, 3).map((g) => (
+              <a
+                key={g.appid}
+                href={`https://store.steampowered.com/app/${g.appid}/`}
+                target="_blank"
+                rel="noreferrer"
+                className="overflow-hidden rounded-xl border border-border bg-surface transition hover:border-accent"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={g.headerUrl} alt="" className="w-full" />
+                <div className="p-4">
+                  <p className="font-semibold leading-snug">{g.name}</p>
+                  {g.reviews !== null && (
+                    <p className="mt-1 text-xs text-muted">
+                      {g.reviews.toLocaleString("en-US")} reviews
+                      {g.metacritic !== null && ` · ${g.metacritic} metacritic`}
+                    </p>
+                  )}
+                </div>
+              </a>
+            ))}
           </div>
+
+          {backlog.length > 3 && (
+            <ul className="mt-6 flex flex-col divide-y divide-border overflow-hidden rounded-xl border border-border bg-surface">
+              {backlog.slice(3).map((g) => (
+                <li key={g.appid}>
+                  <a
+                    href={`https://store.steampowered.com/app/${g.appid}/`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center justify-between gap-4 px-4 py-3 transition hover:bg-[#1b222c]"
+                  >
+                    <span className="truncate">{g.name}</span>
+                    <span className="shrink-0 text-xs text-muted">
+                      {g.reviews !== null ? `${g.reviews.toLocaleString("en-US")} reviews` : "—"}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {backlogRemaining > 0 && (
+            <p className="mt-3 text-sm text-muted">
+              and {backlogRemaining.toLocaleString("en-US")} more you have never opened.
+            </p>
+          )}
         </section>
       )}
 
