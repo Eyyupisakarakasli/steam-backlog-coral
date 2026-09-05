@@ -52,7 +52,7 @@ export default async function ResultPage({ params }: Props) {
 
   return (
     <main className="mx-auto w-full max-w-2xl flex-1 px-6 py-12">
-      <TrackVisit />
+      <TrackVisit totalGames={stats.totalGames} neverPlayed={stats.neverPlayed} />
 
       <div className="flex items-center gap-3">
         {/* Steam avatarları sabit boyutlu; next/image yapılandırması gerektirmesin diye img. */}
