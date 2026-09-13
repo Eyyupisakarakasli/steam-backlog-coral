@@ -70,3 +70,7 @@ Live numbers: [`/stats`](https://steam-backlog-coral.vercel.app/stats)
 
 The share number is the one that matters. If nobody shares, adding a social layer
 will not fix it.
+
+## License
+
+[MIT](LICENSE) © Eyyüp İsa Karakaşlı
